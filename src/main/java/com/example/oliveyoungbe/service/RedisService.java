@@ -13,15 +13,6 @@ public class RedisService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    // ✅ 예약 가능한 시간대 조회
-    public Map<String, Integer> getAvailableSlots() {
-        Map<Object, Object> slots = redisTemplate.opsForHash().entries("available_slots");
-        return slots.entrySet().stream()
-                .collect(Collectors.toMap(
-                        e -> (String) e.getKey(),
-                        e -> Integer.parseInt(e.getValue().toString())));
-    }
-
     // ✅ 특정 시간대 예약 요청
     public String reserveTicket(String slotId) {
         Integer count = (Integer) redisTemplate.opsForHash().get("available_slots", slotId);
